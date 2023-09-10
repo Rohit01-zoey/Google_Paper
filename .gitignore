@@ -1,3 +1,4 @@
 /.vscode
 /pretrained_weights.h5
 /venv
+*.pt
