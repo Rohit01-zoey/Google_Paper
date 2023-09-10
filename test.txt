@@ -1,0 +1,38 @@
+Files already downloaded and verified
+Files already downloaded and verified
+Starting epoch:  0
+| Labelled   Loss | Labelled   Acc | 1.8468 | 0.3296 |
+| Unlabelled Loss | Unlabelled Acc | 1.4883 | 0.3300 |
+| Total      Loss | Total      Acc | 0.0302 | 0.3299 |
+| Test       Loss | Test       Acc | 1.5593 | 0.4364 |
+Starting epoch:  1
+| Labelled   Loss | Labelled   Acc | 1.3987 | 0.4916 |
+| Unlabelled Loss | Unlabelled Acc | 1.0819 | 0.4685 |
+| Total      Loss | Total      Acc | 0.0251 | 0.4720 |
+| Test       Loss | Test       Acc | 1.4243 | 0.4863 |
+Starting epoch:  2
+| Labelled   Loss | Labelled   Acc | 1.2096 | 0.5681 |
+| Unlabelled Loss | Unlabelled Acc | 0.9229 | 0.5170 |
+| Total      Loss | Total      Acc | 0.0181 | 0.5246 |
+| Test       Loss | Test       Acc | 1.2910 | 0.5413 |
+Starting epoch:  3
+| Labelled   Loss | Labelled   Acc | 1.0797 | 0.6222 |
+| Unlabelled Loss | Unlabelled Acc | 0.8138 | 0.5425 |
+| Total      Loss | Total      Acc | 0.0213 | 0.5545 |
+| Test       Loss | Test       Acc | 1.2673 | 0.5386 |
+Starting epoch:  4
+| Labelled   Loss | Labelled   Acc | 0.9956 | 0.6518 |
+| Unlabelled Loss | Unlabelled Acc | 0.7511 | 0.5504 |
+| Total      Loss | Total      Acc | 0.0239 | 0.5656 |
+| Test       Loss | Test       Acc | 1.2555 | 0.5593 |
+Starting epoch:  5
+| Labelled   Loss | Labelled   Acc | 0.9340 | 0.6759 |
+| Unlabelled Loss | Unlabelled Acc | 0.6955 | 0.5636 |
+| Total      Loss | Total      Acc | 0.0163 | 0.5805 |
+| Test       Loss | Test       Acc | 1.2512 | 0.5513 |
+Starting epoch:  6
+| Labelled   Loss | Labelled   Acc | 0.8494 | 0.7088 |
+| Unlabelled Loss | Unlabelled Acc | 0.6335 | 0.5747 |
+| Total      Loss | Total      Acc | 0.0191 | 0.5948 |
+| Test       Loss | Test       Acc | 1.2321 | 0.5624 |
+Starting epoch:  7
