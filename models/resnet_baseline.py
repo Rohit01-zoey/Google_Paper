@@ -74,7 +74,7 @@ class ResNetV2(nn.Module):
 
                 if res_block_iter == 0:
                     # linear projection residual shortcut connection to match changed dims
-                    projection_block = ResNetLayer(num_filters_in, num_filters_out, kernel_size=1, strides=strides, activation=None, batch_normalization=False, conv_first=False)
+                    projection_block = ResNetLayer(num_filters_in, num_filters_out, kernel_size=1, strides=strides, activation=None, batch_normalization=False)
                     self.res_blocks.append(projection_block)
                 
                 prev_num_filters = num_filters_out # append the final output of the layer to the input of the next layer

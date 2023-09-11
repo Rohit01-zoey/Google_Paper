@@ -38,6 +38,23 @@ class TrDataset(Dataset):
   def __getitem__(self, idx):
     x, y = self.base[idx]
     return self.transformations(x), y
+
+# Create a custom data loader with online data augmentation
+def prepare_online(ds, batch_size, shuffle=True):
+
+    # Combine custom augmentation with other transformations as needed
+    data_transforms = transforms.Compose([
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), fill=(0, 0, 0), interpolation=InterpolationMode.BILINEAR)
+    ])
+
+    # Apply transformations to the dataset on-the-fly
+    ds = [(data_transforms(x), y) for x, y in ds]
+
+    # Create PyTorch DataLoader
+    loader = DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=0, pin_memory=True, drop_last=True)
+
+    return loader
     
 
 
@@ -80,7 +97,8 @@ def data(subset_size,data_set):
             NormalizeTransform()
         ])
 
-        train_dataset = CIFAR100(root='../data/', train=True, transform=train_transform ,download=True)
+        # train_dataset = CIFAR100(root='../data/', train=True, transform=train_transform ,download=True)
+        train_dataset = CIFAR100(root='../data/', train=True, transform=test_transform ,download=True)
         test_dataset = CIFAR100(root='../data/', train=False, transform=test_transform, download=True)
 
         num_cls =100
@@ -172,7 +190,7 @@ def data(subset_size,data_set):
         train_dataloader = DataLoader(train_dataset_labelled, batch_size=128, shuffle=True, num_workers=0, pin_memory=True)
         test_dataloader = DataLoader(test_dataset, batch_size=128, shuffle=True, num_workers=0, pin_memory=True)
     print("Data loaded")
-    return train_dataloader, test_dataloader, num_cls
+    return train_dataset_labelled, test_dataloader, num_cls
 
 def set_seed(seed=2):
     np.random.seed(seed)
@@ -189,7 +207,7 @@ def main(args):
     global CUDA
     CUDA = "cuda:"+args.cuda
     set_seed(args.seed)
-    train_dataloader_labelled, test_dataloader,num_cls = data(float(args.subset_size),args.data_set)
+    train_dataloader_labelled_dataset, test_dataloader,num_cls = data(float(args.subset_size),args.data_set)
     
     if args.model == "MobileNetV1Depth2":
         model = MobileNetV1Depth2(num_classes=num_cls).to(CUDA)
@@ -219,7 +237,7 @@ def main(args):
     
     if args.data_set in ['cifar10', 'cifar100', 'svhn', 'celeb_a']:
         # optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-2)
-        optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)
+        optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4) 
     elif args.data_set in ['tiny-imagenet']:
         #optimizer =torch.optim.SGD(model.parameters() , lr=0.1,momentum=0.9,weight_decay=5e-4, nesterov=True)
         optimizer =torch.optim.SGD(model.parameters() , lr=0.1,momentum=0.2, nesterov=False)
@@ -243,7 +261,7 @@ def main(args):
     else:
         epoch_ = 0
     
-    print(f"Training with {len(train_dataloader_labelled.dataset)} point")
+    print(f"Training with {len(train_dataloader_labelled_dataset.dataset)} point")
     max_test_acc = 0
     for epoch in range(epoch_,args.epoch):
         print(f"Starting epoch: {epoch}",file=log_file)
@@ -254,6 +272,8 @@ def main(args):
         iteration = 0
         best_loss = float('inf')
         
+        train_dataloader_labelled = prepare_online(train_dataloader_labelled_dataset, batch_size=128, shuffle=True)
+
         if args.data_set in ['cifar10', 'cifar100', 'svhn', 'celeb_a']:
             for group in optimizer.param_groups:
                 group['lr'] = 1e-3
